@@ -91,9 +91,9 @@ class LoginFrame(ttk.Frame):
 
         if not username:
             return messagebox.showerror("Error", "Enter username.")
-
         if not year.isdigit() or not (9 <= int(year) <= 13):
             return messagebox.showerror("Error", "Year must be 9–13.")
+  
 
         self.master.switch_to_menu(username)
 
@@ -168,11 +168,18 @@ class MenuFrame(ttk.Frame):
             self.order_tree.delete(row)
         self.update_total()
 
+    
     # Add item instantly (no customization)
     def add_item(self):
         selected = self.menu_tree.selection()
         if not selected:
             return messagebox.showerror("Error", "Select an item.")
+        
+        qty_text = self.qty_spin.get()
+        if not qty_text.isdigit():
+         return messagebox.showerror("Error", "Invalid quantity")
+  
+
 
         item = self.menu_tree.item(selected[0])["values"][0]
         price = MENU_ITEMS[item]
@@ -183,6 +190,7 @@ class MenuFrame(ttk.Frame):
         self.master.current_order[item] += qty
 
         self.refresh_order_view()
+
 
     # Refresh order list
     def refresh_order_view(self):
